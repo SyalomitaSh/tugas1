@@ -1,10 +1,26 @@
-import pygame
+import pygame,random
 import sys
+from pygame.math import Vector2
+
+class Food:
+    def __init__(self):
+        self.x = random.randint(0,cell_number - 1)
+        self.y = random.randint(0,cell_number - 1)
+        self.pos = pygame.math.Vector2(self.x,self.y)
+
+    def draw_food(self):
+            food_rect = pygame.Rect(int(self.pos.x * cell_size),int(self.pos.y * cell_size),cell_size,cell_size)
+            pygame.draw.rect(screen,('blue'),food_rect)
+
+
 
 pygame.init()
-screen = pygame.display.set_mode((450,500))
+cell_size = 25
+cell_number = 20
+screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()
-test_surface = pygame.Surface((100,200))
+
+food = Food()
 
 
 while True:
@@ -12,7 +28,8 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    screen.fill((190,210,234))
-    screen.blit(test_surface,(200,250))        
+
+    screen.fill((190,210,50))    
+    food.draw_food()
     pygame.display.update()
     clock.tick(60)
