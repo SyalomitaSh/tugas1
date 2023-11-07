@@ -7,10 +7,12 @@ class Food:
         self.x = random.randint(0,cell_number - 1)
         self.y = random.randint(0,cell_number - 1)
         self.pos = pygame.math.Vector2(self.x,self.y)
-
+    
     def draw_food(self):
-            food_rect = pygame.Rect(int(self.pos.x * cell_size),int(self.pos.y * cell_size),cell_size,cell_size)
-            pygame.draw.rect(screen,('blue'),food_rect)
+        apple_image = pygame.image.load('applee.png')
+        food_rect = apple_image.get_rect() 
+        food_rect.topleft = (int(self.pos.x * cell_size), int(self.pos.y * cell_size))
+        screen.blit(apple_image, food_rect) 
 
 class Snake:
     def __init__(self):
