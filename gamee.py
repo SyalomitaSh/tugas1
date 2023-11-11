@@ -52,6 +52,16 @@ while True:
             sys.exit()
         if event.type == SCREEN_UPDATE:
             snake.move_snake()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+                snake.direction = Vector2(0,-1)
+            if event.key == pygame.K_s:
+                snake.direction = Vector2(0,1)
+            if event.key == pygame.K_a:
+                snake.direction = Vector2(-1,0)
+            if event.key == pygame.K_d:
+                snake.direction = Vector2(1,0)
+        
 
     screen.fill((190,210,50))    
     food.draw_food()
