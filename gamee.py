@@ -4,9 +4,7 @@ from pygame.math import Vector2
 
 class Food:
     def __init__(self):
-        self.x = random.randint(0,cell_number - 1)
-        self.y = random.randint(0,cell_number - 1)
-        self.pos = pygame.math.Vector2(self.x,self.y)
+        self.randomize()
     
     def draw_food(self):
         apple_image = pygame.image.load('applee.png')
@@ -14,6 +12,11 @@ class Food:
         food_rect = apple_image.get_rect() 
         food_rect.topleft = (int(self.pos.x * cell_size), int(self.pos.y * cell_size))
         screen.blit(apple_image, food_rect) 
+
+    def randomize(self):
+        self.x = random.randint(0,cell_number - 1)
+        self.y = random.randint(0,cell_number - 1)
+        self.pos = pygame.math.Vector2(self.x,self.y)
 
 
 class Snake:
@@ -33,17 +36,35 @@ class Snake:
         body_copy.insert(0,body_copy[0] + self.direction)
         self.body = body_copy[:]
 
+class Main:
+    def __init__(self):
+        self.snake = Snake()
+        self.food = Food()
+
+    def update(self):
+        self.snake.move_snake()
+        self.check_collision()
+
+    def draw_elements(self):
+        self.food.draw_food()
+        self.snake.draw_snake()
+
+    def check_collision(self):
+        if self.food.pos == self.snake.body[0]:
+            self.food.randomize()
+
+
 pygame.init()
 cell_size = 25
 cell_number = 20
 screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()
 
-food = Food()
-snake = Snake() 
 
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE,150)
+
+main_game = Main()
 
 while True:
     for event in pygame.event.get():
@@ -51,20 +72,19 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == SCREEN_UPDATE:
-            snake.move_snake()
+            main_game.update()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                snake.direction = Vector2(0,-1)
+                main_game.snake.direction = Vector2(0,-1)
             if event.key == pygame.K_s:
-                snake.direction = Vector2(0,1)
+                main_game.snake.direction = Vector2(0,1)
             if event.key == pygame.K_a:
-                snake.direction = Vector2(-1,0)
+                main_game.snake.direction = Vector2(-1,0)
             if event.key == pygame.K_d:
-                snake.direction = Vector2(1,0)
+                main_game.snake.direction = Vector2(1,0)
         
 
     screen.fill((190,210,50))    
-    food.draw_food()
-    snake.draw_snake()
+    main_game.draw_elements()
     pygame.display.update()
     clock.tick(60)
