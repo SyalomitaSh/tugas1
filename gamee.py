@@ -23,6 +23,7 @@ class Snake:
     def __init__(self):
         self.body = [Vector2(5,10),Vector2(6,10),Vector2(7,10)]
         self.direction = Vector2(1,0)
+        self.new_block = False
 
     def draw_snake(self):
             for block in self.body:
@@ -32,9 +33,19 @@ class Snake:
                 pygame.draw.rect(screen,(33,75,1),block_rect)
 
     def move_snake(self):
-        body_copy = self.body[:-1]
-        body_copy.insert(0,body_copy[0] + self.direction)
-        self.body = body_copy[:]
+        if self.new_block == True:
+            body_copy = self.body[:]
+            body_copy.insert(0,body_copy[0] + self.direction)
+            self.body = body_copy[:]
+            self.new_block = False
+        else:
+            body_copy = self.body[:-1]
+            body_copy.insert(0,body_copy[0] + self.direction)
+            self.body = body_copy[:]
+
+    def add_block(self):
+        self.new_block = True
+
 
 class Main:
     def __init__(self):
@@ -52,6 +63,7 @@ class Main:
     def check_collision(self):
         if self.food.pos == self.snake.body[0]:
             self.food.randomize()
+            self.snake.add_block()
 
 
 pygame.init()
