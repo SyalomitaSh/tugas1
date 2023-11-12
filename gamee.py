@@ -21,16 +21,54 @@ class Food:
 
 class Snake:
     def __init__(self):
-        self.body = [Vector2(5,10),Vector2(6,10),Vector2(7,10)]
+        self.body = [Vector2(5,10),Vector2(4,10),Vector2(3,10)]
         self.direction = Vector2(1,0)
         self.new_block = False
 
+        self.head_up = pygame.image.load('headatas.png').convert_alpha()
+        self.head_down = pygame.image.load('headbawah.png').convert_alpha()
+        self.head_right = pygame.image.load('headkanan.png').convert_alpha()
+        self.head_left = pygame.image.load('headkiri.png').convert_alpha()
+
+        self.head_up = pygame.transform.scale(self.head_up, (cell_size, cell_size))
+        self.head_down = pygame.transform.scale(self.head_down, (cell_size, cell_size))
+        self.head_right = pygame.transform.scale(self.head_right, (cell_size, cell_size))
+        self.head_left = pygame.transform.scale(self.head_left, (cell_size, cell_size))
+
+        self.tail_up = pygame.image.load('tailatas.png').convert_alpha()
+        self.tail_down = pygame.image.load('tailbawah.png').convert_alpha()
+        self.tail_right = pygame.image.load('tailkanan.png').convert_alpha()
+        self.tail_left = pygame.image.load('tailkiri.png').convert_alpha()
+
+        self.datar = pygame.image.load('bodyatas.png').convert_alpha()
+        self.atas = pygame.image.load('bodymendatar.png').convert_alpha()
+
+        self.belokkananatas = pygame.image.load('belokkananatas.png').convert_alpha()
+        self.belokkananbawah = pygame.image.load('belokkananbawah.png').convert_alpha()
+        self.belokkiriatas = pygame.image.load('belokkiriatas.png').convert_alpha()
+        self.belokkiribawah = pygame.image.load('belokkiribawah.png').convert_alpha()
+
     def draw_snake(self):
-            for block in self.body:
-                x_pos = int(block.x * cell_size)
-                y_pos = int(block.y * cell_size)
-                block_rect = pygame.Rect(x_pos,y_pos,cell_size,cell_size)
+        self.update_head_graphics()
+
+        for index,block in enumerate(self.body):
+            x_pos = int(block.x * cell_size)
+            y_pos = int(block.y * cell_size)
+            block_rect = pygame.Rect(x_pos,y_pos,cell_size,cell_size)
+            
+
+            if index == 0:
+                screen.blit(self.head,block_rect)
+            else:
                 pygame.draw.rect(screen,(33,75,1),block_rect)
+
+    def update_head_graphics(self):
+        head_relation = self.body[1] - self.body[0]
+        if head_relation == Vector2(1,0): self.head = self.head_left
+        elif head_relation == Vector2(-1,0): self.head =self.head_right
+        elif head_relation == Vector2(0,1): self.head =self.head_up
+        elif head_relation == Vector2(0,-1): self.head =self.head_down
+
 
     def move_snake(self):
         if self.new_block == True:
@@ -50,11 +88,12 @@ class Snake:
 class Main:
     def __init__(self):
         self.snake = Snake()
-        self.food = Food()
+        self.food = Food() 
 
     def update(self):
         self.snake.move_snake()
         self.check_collision()
+        self.check_fail()
 
     def draw_elements(self):
         self.food.draw_food()
@@ -64,6 +103,18 @@ class Main:
         if self.food.pos == self.snake.body[0]:
             self.food.randomize()
             self.snake.add_block()
+
+    def check_fail(self):
+        if not 0 <= self.snake.body[0].x < cell_number or not 0 <= self.snake.body[0].y < cell_number:
+            self.game_over()
+
+        for block in self.snake.body[1:]:
+            if block == self.snake.body[0]:
+                self.game_over()
+
+    def game_over():
+        pygame.quit()
+        sys.exit() 
 
 
 pygame.init()
@@ -87,13 +138,17 @@ while True:
             main_game.update()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                main_game.snake.direction = Vector2(0,-1)
+                if main_game.snake.direction.y != 1:
+                    main_game.snake.direction = Vector2(0,-1)
             if event.key == pygame.K_s:
-                main_game.snake.direction = Vector2(0,1)
+                if main_game.snake.direction.y != -1:
+                    main_game.snake.direction = Vector2(0,1)
             if event.key == pygame.K_a:
-                main_game.snake.direction = Vector2(-1,0)
+                if main_game.snake.direction.x != -1:
+                    main_game.snake.direction = Vector2(-1,0)
             if event.key == pygame.K_d:
-                main_game.snake.direction = Vector2(1,0)
+                if main_game.snake.direction.x != 1:
+                    main_game.snake.direction = Vector2(1,0)
         
 
     screen.fill((190,210,50))    
