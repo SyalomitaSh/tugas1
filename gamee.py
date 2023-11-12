@@ -40,6 +40,11 @@ class Snake:
         self.tail_right = pygame.image.load('tailkanan.png').convert_alpha()
         self.tail_left = pygame.image.load('tailkiri.png').convert_alpha()
 
+        self.tail_up = pygame.transform.scale(self.tail_up, (cell_size, cell_size))
+        self.tail_down = pygame.transform.scale(self.tail_down, (cell_size, cell_size))
+        self.tail_right = pygame.transform.scale(self.tail_right, (cell_size, cell_size))
+        self.tail_left = pygame.transform.scale(self.tail_left, (cell_size, cell_size))
+
         self.datar = pygame.image.load('bodyatas.png').convert_alpha()
         self.atas = pygame.image.load('bodymendatar.png').convert_alpha()
 
@@ -50,6 +55,7 @@ class Snake:
 
     def draw_snake(self):
         self.update_head_graphics()
+        self.update_tail_graphics()
 
         for index,block in enumerate(self.body):
             x_pos = int(block.x * cell_size)
@@ -59,6 +65,8 @@ class Snake:
 
             if index == 0:
                 screen.blit(self.head,block_rect)
+            elif index == len(self.body) -1:
+                screen.blit(self.tail, block_rect)
             else:
                 pygame.draw.rect(screen,(33,75,1),block_rect)
 
@@ -68,6 +76,16 @@ class Snake:
         elif head_relation == Vector2(-1,0): self.head =self.head_right
         elif head_relation == Vector2(0,1): self.head =self.head_up
         elif head_relation == Vector2(0,-1): self.head =self.head_down
+
+    def update_tail_graphics(self):
+        # 
+        if len(self.body) >= 2:
+            tail_relation = self.body[-1] - self.body[-2]
+
+        if tail_relation == Vector2(1,0): self.tail = self.tail_left
+        elif tail_relation == Vector2(-1,0): self.tail =self.tail_right
+        elif tail_relation == Vector2(0,1): self.tail =self.tail_up
+        elif tail_relation == Vector2(0,-1): self.tail =self.tail_down
 
 
     def move_snake(self):
