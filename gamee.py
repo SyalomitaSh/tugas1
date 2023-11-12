@@ -25,36 +25,36 @@ class Snake:
         self.direction = Vector2(1,0)
         self.new_block = False
 
-        self.head_up = pygame.image.load('headatas.png').convert_alpha()
-        self.head_down = pygame.image.load('headbawah.png').convert_alpha()
-        self.head_right = pygame.image.load('headkanan.png').convert_alpha()
-        self.head_left = pygame.image.load('headkiri.png').convert_alpha()
+        self.head_up = pygame.image.load('head_up.png').convert_alpha()
+        self.head_down = pygame.image.load('head_down.png').convert_alpha()
+        self.head_right = pygame.image.load('head_right.png').convert_alpha()
+        self.head_left = pygame.image.load('head_left.png').convert_alpha()
 
         self.head_up = pygame.transform.scale(self.head_up, (cell_size, cell_size))
         self.head_down = pygame.transform.scale(self.head_down, (cell_size, cell_size))
         self.head_right = pygame.transform.scale(self.head_right, (cell_size, cell_size))
         self.head_left = pygame.transform.scale(self.head_left, (cell_size, cell_size))
 
-        self.tail_up = pygame.image.load('tailatas.png').convert_alpha()
-        self.tail_down = pygame.image.load('tailbawah.png').convert_alpha()
-        self.tail_right = pygame.image.load('tailkanan.png').convert_alpha()
-        self.tail_left = pygame.image.load('tailkiri.png').convert_alpha()
+        self.tail_up = pygame.image.load('tail_down.png').convert_alpha()
+        self.tail_down = pygame.image.load('tail_up.png').convert_alpha()
+        self.tail_right = pygame.image.load('tail_left.png').convert_alpha()
+        self.tail_left = pygame.image.load('tail_right.png').convert_alpha()
 
         self.tail_up = pygame.transform.scale(self.tail_up, (cell_size, cell_size))
         self.tail_down = pygame.transform.scale(self.tail_down, (cell_size, cell_size))
         self.tail_right = pygame.transform.scale(self.tail_right, (cell_size, cell_size))
         self.tail_left = pygame.transform.scale(self.tail_left, (cell_size, cell_size))
 
-        self.body_datar = pygame.image.load('bodyatas.png').convert_alpha()
-        self.body_atas = pygame.image.load('baruu.png').convert_alpha()
+        self.body_datar = pygame.image.load('body_vertical.png').convert_alpha()
+        self.body_atas = pygame.image.load('body_horizontal.png').convert_alpha()
 
         self.body_datar = pygame.transform.scale(self.body_datar, (cell_size, cell_size))
         self.body_atas = pygame.transform.scale(self.body_atas, (cell_size, cell_size))
 
-        self.belokkananatas = pygame.image.load('last.png').convert_alpha()
-        self.belokkananbawah = pygame.image.load('kananbawahh.png').convert_alpha()
-        self.belokkiriatas = pygame.image.load('belokkiriatas.png').convert_alpha()
-        self.belokkiribawah = pygame.image.load('belokkiribawah.png').convert_alpha()
+        self.belokkananatas = pygame.image.load('body_tr.png').convert_alpha()
+        self.belokkananbawah = pygame.image.load('body_tl.png').convert_alpha()
+        self.belokkiriatas = pygame.image.load('body_br.png').convert_alpha()
+        self.belokkiribawah = pygame.image.load('body_bl.png').convert_alpha()
 
         self.belokkananatas = pygame.transform.scale(self.belokkananatas, (cell_size, cell_size))
         self.belokkananbawah = pygame.transform.scale(self.belokkananbawah, (cell_size, cell_size))
@@ -85,13 +85,13 @@ class Snake:
                     screen.blit(self.body_atas, block_rect)
                 else:
                     if previous_block.x == -1 and next_block.y == -1 or previous_block.y == -1 and next_block.x == -1:
-                        screen.blit(self.belokkiribawah, block_rect)
-                    elif previous_block.x == -1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == -1:
-                        screen.blit(self.belokkiriatas, block_rect)
-                    elif previous_block.x == 1 and next_block.y == -1 or previous_block.y == -1 and next_block.x == 1:
                         screen.blit(self.belokkananbawah, block_rect)
-                    elif previous_block.x == 1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == 1:
+                    elif previous_block.x == -1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == -1:
+                        screen.blit(self.belokkiribawah, block_rect)
+                    elif previous_block.x == 1 and next_block.y == -1 or previous_block.y == -1 and next_block.x == 1:
                         screen.blit(self.belokkananatas, block_rect)
+                    elif previous_block.x == 1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == 1:
+                        screen.blit(self.belokkiriatas, block_rect)
 
 
 
@@ -109,7 +109,7 @@ class Snake:
         if tail_relation == Vector2(1,0): self.tail = self.tail_left
         elif tail_relation == Vector2(-1,0): self.tail =self.tail_right
         elif tail_relation == Vector2(0,1): self.tail =self.tail_up
-        elif tail_relation == Vector2(0,-1): self.tail =self.tail_down
+        elif tail_relation == Vector2(0,-1): self.tail =self.tail_down 
 
 
     def move_snake(self):
@@ -189,7 +189,7 @@ class Main:
     
 
 pygame.init()
-cell_size = 15
+cell_size = 25
 cell_number = 20
 screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()
