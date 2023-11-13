@@ -7,6 +7,14 @@ Projek ini adalah implementasi sederhana dari permainan Snake menggunakan librar
 
 Sebelum menjalankan permainan, pastikan Anda telah menginstal library Pygame.
 
+# Cara Menjalankan
+
+    Unduh semua file yang terkait dengan projek ini.
+    Pastikan Python dan Pygame telah terinstal di komputer Anda.
+    Buka terminal atau command prompt.
+    Pindah ke direktori tempat Anda menyimpan file projek.
+    Jalankan permainan dengan menjalankan perintah: py gamee.py
+
 # Cara Bermain
 
     Gunakan key a untuk ke kiri,key d ke kanan,key w keatas dan key s ke bawahh pada keyboard untuk menggerakkan ular.
